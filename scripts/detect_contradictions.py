@@ -1,6 +1,7 @@
 import argparse
 import os
 from argparse import Namespace
+import pathlib
 
 from dotenv import load_dotenv
 
@@ -11,6 +12,7 @@ from kb_guardian.utils.paths import get_config, get_data_folders, get_vectorstor
 from kb_guardian.utils.vectorstore import load_FAISS_vectorstore, save_FAISS_vectorstore
 
 CONFIG = get_config()
+print(CONFIG)
 
 if CONFIG["azure_openai"]:
     load_dotenv(".env.cloud", override=True)
@@ -48,7 +50,7 @@ def parse_arguments() -> Namespace:
 if __name__ == "__main__":
     args = parse_arguments()
 
-    if not (os.path.isfile(VECTORSTORE_PATH)):
+    if not (pathlib.Path(VECTORSTORE_PATH).exists()):
         INFO_LOGGER.error(
             f"Vectorstore {VECTORSTORE_PATH} does not exist and can therefore not be extended."  # noqa: E501
         )

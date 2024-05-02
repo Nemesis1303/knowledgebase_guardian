@@ -1,8 +1,8 @@
 import os
 
-from langchain.chat_models import AzureChatOpenAI, ChatOpenAI
-from langchain.chat_models.base import BaseChatModel
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_community.chat_models import AzureChatOpenAI#, ChatOpenAI
+from langchain_core.language_models.chat_models import BaseChatModel
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 
 from kb_guardian.utils.paths import get_config
 

@@ -33,7 +33,7 @@ def get_vectorstore_paths(config: Dict[str, Any]) -> Tuple[str, str, str, str]:
     prefix = project_root / config["vectorstore_dir"] / config["vectorstore_name"]
 
     index_path = f"{prefix}.index"
-    vectorstore_path = f"{prefix}.pkl"
+    vectorstore_path = f"{prefix}" ##.pkl"
     extended_index_path = f"{prefix}_extended.index"
     extended_vectorstore_path = f"{prefix}_extended.pkl"
 

@@ -1,10 +1,13 @@
+import os
+import pathlib
 import pickle
+import shutil
 from typing import List
 
 import faiss
 from langchain.schema import Document
-from langchain.vectorstores import FAISS
-
+from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
 from kb_guardian.utils.deployment import get_deployment_embedding
 
 
@@ -38,8 +41,9 @@ def load_FAISS_vectorstore(index_filename: str, store_filename: str) -> FAISS:
 
     """
     index = faiss.read_index(index_filename)
-    with open(store_filename, "rb") as f:
-        vectorstore = pickle.load(f)
+    #with open(store_filename, "rb") as f:
+    #    vectorstore = pickle.load(f)
+    vectorstore = FAISS.load_local(store_filename, OpenAIEmbeddings(),allow_dangerous_deserialization=True)
     vectorstore.index = index
     return vectorstore
 
@@ -60,6 +64,11 @@ def save_FAISS_vectorstore(
 
     """
     faiss.write_index(vectorstore.index, index_filename)
-    vectorstore.index = None
-    with open(store_filename, "wb") as f:
-        pickle.dump(vectorstore, f)
+    #vectorstore.index = None
+    print(type(vectorstore))
+    print(vectorstore)
+    #with open(store_filename, "wb") as f:
+    #    pickle.dump(vectorstore, f)
+    if pathlib.Path(store_filename).exists():
+        shutil.rmtree(pathlib.Path(store_filename))
+    vectorstore.save_local(store_filename)
